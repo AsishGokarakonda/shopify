@@ -1,6 +1,8 @@
 const express = require("express")
 const productssch = require("../models/Products")
 const cartsch = require("../models/Cart.js")
+const reviewsch = require("../models/Reviews.js")
+const usersch = require("../models/User")
 const router = express.Router()
 const fetchuser = require("../middleware/fetchuser")
 
@@ -84,5 +86,43 @@ router.get("/getcart",fetchuser,async (req, res) => {
         res.status(500).send("Internal Server error occured")
     }
 })
+
+
+router.post("/addreview/:id",fetchuser,async  (req, res) => {
+    const userid =req.user.id
+    const {review} = req.body
+    const item = await productssch.findById(req.params.id)
+    let notes = await reviewsch.create({
+        itemId : req.params.id,
+        userId : userid,
+        review:review
+    })
+    res.status(200).send(notes)
+})
+
+
+router.get("/more/:id",fetchuser,async (req, res) => {
+    try{
+        const item = await productssch.findById(req.params.id)
+        const reviews = await reviewsch.find({ itemId: req.params.id })
+
+        var totalReviews = []
+        for (let index = 0; index < reviews.length; index++) {
+            const names = reviews[index]["userId"];
+            const username = await usersch.findById(names)
+            const review = reviews[index]["review"]
+            const dict ={}
+            dict[username.name] = review
+            totalReviews.push(dict)
+        }
+        res.status(200).send(totalReviews)
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server error occured")
+    }
+})
+
+
 
 module.exports = router
