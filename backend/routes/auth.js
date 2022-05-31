@@ -67,7 +67,9 @@ router.post("/loginuser",
             if (!user) {
                 return res.status(400).send({ success, "message": "Sorry,No user with this email and password exists" })
             }
-
+            if(user.blocked === "blocked"){
+                return res.status(400).send({ success, "message": "Sorry,Your account is blocked" })
+            }
             let login = bcrypt.compare(req.body.password, user.password);
             if (!login) {
                 return res.status(400).send({ success, "message": "Please login with correct credentials" })
@@ -104,6 +106,107 @@ router.post("/getuser", fetchuser, async (req, res) => {
 
 })
 
+//  deleting a user with its id 
+router.delete("/deleteuser/:id", fetchuser, async (req, res) => {
+    try {
+        const user = await usersch.findById(req.params.id)
+        if (!user) {
+            return res.status(404).send("User doesnot exists")
+        }
+        // return res.status(200).send(user._id);
+        if (user._id.toString() != req.user.id) {
+            return res.status(401).send("Not authorised!!")
+        }
+        let userDelete = await usersch.findByIdAndDelete(req.params.id)
+        return res.status(200).send("Success! User has been deleted")
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server error occured")
+    }
+})
+
+// editing a user profile
+router.put("/edituser/:id", fetchuser, async (req, res) => {
+    try {
+        const { name, email } = req.body
+        const user = await usersch.findById(req.params.id)
+        if (!user) {
+            return res.status(404).send("User doesnot exists")
+        }
+        if (user._id.toString() != req.user.id) {
+            return res.status(401).send("Not authorised!!")
+        }
+        const newUser = {}
+        newUser.name = name
+        newUser.email = email
+        let updatedUser = await usersch.findByIdAndUpdate(req.params.id, { $set: newUser }, { new: true })
+        return res.status(200).send(updatedUser)
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server error occured")
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---------------------------------------------  admin functionalities  -------------------------------------------------------
+
+router.get("/getallusers",async (req, res) => {
+    try {
+        const users = await usersch.find({})
+        res.status(200).send(users)
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server error occured")
+    }
+
+})
+
+router.post("/blockuser/:id",async (req, res) => {
+    try {
+        const userid = req.params.id
+        const update = {
+            blocked:"blocked"
+        }
+        const user = await usersch.findByIdAndUpdate(userid,update,{ new: true })
+        return res.status(200).send(user)
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server error occured")
+    }
+})
+
+
+router.post("/unblockuser/:id",async (req, res) => {
+    try {
+        const userid = req.params.id
+        const update = {
+            blocked:"not blocked"
+        }
+        const user = await usersch.findByIdAndUpdate(userid,update,{ new: true })
+        return res.status(200).send(user)
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server error occured")
+    }
+})
 
 
 module.exports = router

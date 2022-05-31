@@ -18,6 +18,10 @@ const UserSchema = new Schema({
         type: String,
         default:   new Date().toLocaleString()
     },
+    blocked:{
+        type: String,
+        default: "not blocked"
+    }
      });
 
 module.exports = mongoose.model('users',UserSchema)

@@ -1,6 +1,10 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose;
-const ProductSchema = new Schema({
+const CartSchema = new Schema({
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'users'
+    },
     name: {
         type:String,
         required: true,
@@ -20,5 +24,5 @@ const ProductSchema = new Schema({
     },
      });
 
-module.exports = mongoose.model('products',ProductSchema)
-//products named collection will be created
+module.exports = mongoose.model('cart',CartSchema)
+//cart named collection will be created
