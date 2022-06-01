@@ -17,6 +17,7 @@ import AdminHome from './components/AdminHome';
 import AdminViewListOfUsers from './components/AdminViewListOfUsers';
 import AdminAddProduct from './components/AdminAddProduct';
 import AdminUpdateProducts from './components/AdminUpdateProducts'
+import EditAccount from './components/EditAccount';
 
 function App() {
   const [alert, setAlert] = useState(null)
@@ -33,7 +34,7 @@ function App() {
     <>
       <ProductsState>
         <BrowserRouter>
-          <Navbar />
+          <Navbar promptAlert={promptAlert} />
           <Alert alert={alert} />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -45,6 +46,7 @@ function App() {
             <Route path="/listofusers" element={<AdminViewListOfUsers />} />
             <Route path="/addproduct" element={<AdminAddProduct promptAlert={promptAlert} />} />
             <Route path="/updateproduct" element={<AdminUpdateProducts promptAlert={promptAlert} />} />
+            <Route path="/editaccount" element={<EditAccount promptAlert={promptAlert} />} />
             
 
           </Routes>

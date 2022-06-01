@@ -15,6 +15,10 @@ const AdminUpdateProducts = (props) => {
         getProducts()
     })
 
+    const handleGoBack = () =>{
+        navigate("/Adminhome")
+    }
+
     const modifyproduct = (item) => {
         // console.log(item)
         document.getElementById('launchdemo').click()
@@ -40,6 +44,7 @@ const AdminUpdateProducts = (props) => {
         });
     document.getElementById('modalclose').click()
     }
+    
 
     return (
         <>
@@ -83,7 +88,10 @@ const AdminUpdateProducts = (props) => {
 
             <div className='container'>
                 <div className="row my-3" >
+                    <div style={{display:"flex",justifyContent:"space-between"}}>
                     <h1>Products</h1>
+                    <button className="btn btn-danger" onClick={handleGoBack}>Go Back</button>
+                    </div>
                     {products.map((item) => {
                         return <ProductItemAdmin item={item} modifyproduct={modifyproduct} key={item._id} />
                     })}

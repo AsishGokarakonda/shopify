@@ -22,8 +22,8 @@ const Signup = (props) => {
         }).then(function (response) {
             console.log(response);
             props.promptAlert("Signed up successfully", "success")
-            localStorage.setItem("Authorization", response.data.token)
-            navigate("/products");
+            // localStorage.setItem("Authorization", response.data.token)
+            navigate("/login");
         })
             .catch(function (error) {
                 console.log(error)

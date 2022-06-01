@@ -9,6 +9,7 @@ const ProductsState = (props) => {
   const [products, setProducts] = useState(productsIntial)
   const [reviews, setReviews] = useState([])
   const [allusers, setAllusers] = useState([])
+  const [oneuser, setOneuser] = useState({})
   const getProducts = async () => {
     const response = await fetch(`${host}/api/products/getallproducts`, {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -42,12 +43,10 @@ const ProductsState = (props) => {
   const addReview = async (review,itemid,Authorization) => {
     console.log("addreview")
     // console.log(review)
-    console.log(itemid._id)
-    // console.log(Authorization)
-    // _id: "6295dedc9ccaac4dba181376"
-    const key = `${host}/api/products/addreview/${itemid._id}`
-    console.log(key)
-    const response = await fetch(key, {
+    console.log(review)
+    console.log(itemid)
+    console.log(Authorization)
+    const response = await fetch(`${host}/api/products/addreview/${itemid}`, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +55,7 @@ const ProductsState = (props) => {
       body: JSON.stringify(review)
     });
     const reviewaddition = await response.json()
-    console.log("first")
+    console.log("final")
     console.log(reviewaddition)
 }
 
@@ -135,8 +134,52 @@ const updateProduct = async (id,product) =>{
 }
 
 
+  const deleteAccount = async (Authorization) =>{
+    // http://localhost:5000/api/auth/deleteuser/
+    console.log(Authorization)
+    const response = await fetch(`${host}/api/auth/deleteuser/`, {
+      method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Authorization
+      }
+    });
+    // const result = await response.json()
+    console.log(response) 
+    localStorage.removeItem("Authorization")
+  }
+
+
+  const editAccount = async (Authorization) =>{
+    // http://localhost:5000/api/auth/edituser
+    const response = await fetch(`${host}/api/auth/edituser`, {
+      method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Authorization
+      }
+    });
+    const result = await response.json()
+    console.log(result) 
+    console.log(response)
+
+  }
+
+  const getuserbyAuthToken = async(Authorization) =>{
+    // http://localhost:5000/api/auth/getuser
+    const response = await fetch(`${host}/api/auth/getuser`, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Authorization
+      }
+    });
+    const result = await response.json()
+    console.log(result)
+    setOneuser(result)
+  }
   return (
-    <productsContext.Provider value={{ products, getProducts , MoreAboutProduct , reviews, addReview, getallusers,allusers,blockuser,unblockuser,addProduct,updateProduct}}>
+    <productsContext.Provider value={{ products, getProducts , MoreAboutProduct , reviews, addReview, getallusers,allusers,blockuser,unblockuser,addProduct,updateProduct,deleteAccount,editAccount,getuserbyAuthToken,oneuser}}>
       {props.children}
     </productsContext.Provider>
   )

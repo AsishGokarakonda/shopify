@@ -107,17 +107,16 @@ router.post("/getuser", fetchuser, async (req, res) => {
 })
 
 //  deleting a user with its id 
-router.delete("/deleteuser/:id", fetchuser, async (req, res) => {
+router.delete("/deleteuser/", fetchuser, async (req, res) => {
     try {
-        const user = await usersch.findById(req.params.id)
+        console.log("Hi")
+        console.log(req.user.id)
+        const user = await usersch.findById(req.user.id)
         if (!user) {
             return res.status(404).send("User doesnot exists")
         }
         // return res.status(200).send(user._id);
-        if (user._id.toString() != req.user.id) {
-            return res.status(401).send("Not authorised!!")
-        }
-        let userDelete = await usersch.findByIdAndDelete(req.params.id)
+        let userDelete = await usersch.findByIdAndDelete(req.user.id)
         return res.status(200).send("Success! User has been deleted")
     }
     catch (error) {
@@ -127,20 +126,17 @@ router.delete("/deleteuser/:id", fetchuser, async (req, res) => {
 })
 
 // editing a user profile
-router.put("/edituser/:id", fetchuser, async (req, res) => {
+router.put("/edituser", fetchuser, async (req, res) => {
     try {
         const { name, email } = req.body
-        const user = await usersch.findById(req.params.id)
+        const user = await usersch.findById(req.user.id)
         if (!user) {
             return res.status(404).send("User doesnot exists")
-        }
-        if (user._id.toString() != req.user.id) {
-            return res.status(401).send("Not authorised!!")
         }
         const newUser = {}
         newUser.name = name
         newUser.email = email
-        let updatedUser = await usersch.findByIdAndUpdate(req.params.id, { $set: newUser }, { new: true })
+        let updatedUser = await usersch.findByIdAndUpdate(req.user.id, { $set: newUser }, { new: true })
         return res.status(200).send(updatedUser)
     }
     catch (error) {

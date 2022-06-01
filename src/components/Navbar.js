@@ -1,13 +1,31 @@
 import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-const Navbar = () => {
+import { Link, useLocation, useNavigate,  } from 'react-router-dom'
+import { useContext } from 'react'
+import productsContext from '../context/productsContext'
+
+const Navbar = (props) => {
     const loc = useLocation()
-    // console.log(loc)
     const navigate = useNavigate()
+    const context = useContext(productsContext)
+    const { deleteAccount } = context
+
     const handleLogOut = () => {
         localStorage.removeItem("Authorization")
         navigate('/login')
         console.log("first")
+    }
+    const handleDelete =()=>{
+        deleteAccount(localStorage.getItem("Authorization")).then(function (response) {
+            props.promptAlert("Your account is deleted successfully", "success")
+            navigate("/signup");
+        })
+        .catch(function (error) {
+            console.log(error)
+            props.promptAlert(error,"danger")
+        });
+    }
+    const handleEditAcc =() =>{
+        navigate("/editaccount")
     }
     return (
 
@@ -41,9 +59,20 @@ const Navbar = () => {
                         <Link className="btn btn-primary mx-2" to="/login" role="button">Login</Link>
                         <Link className="btn btn-primary mx-2" to="/signup" role="button">Sign up</Link>
                     </form> :
+                    <div>
                         <button onClick={handleLogOut} className='btn btn-primary mx-2'>
                             LogOut
                         </button>
+                        <button onClick={handleEditAcc} className='btn btn-warning mx-2'>
+                            Edit Account
+                        </button>
+                        
+                        <button onClick={handleDelete} className='btn btn-danger mx-2'>
+                            Delete Account
+                        </button>
+
+                    </div>
+
                     }
                 </div>
             </div>

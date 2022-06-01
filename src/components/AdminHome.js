@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 const AdminHome = () => {
     const navigate = useNavigate()
-    localStorage.removeItem("Authorization")
+    // localStorage.removeItem("Authorization")
     const handleOnClick = (url) =>{
         navigate(`/${url}`)
     }
