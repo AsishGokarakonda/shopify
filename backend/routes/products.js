@@ -101,9 +101,10 @@ router.post("/addreview/:id",fetchuser,async  (req, res) => {
 })
 
 
-router.get("/more/:id",fetchuser,async (req, res) => {
+router.post("/more/:id",fetchuser,async (req, res) => {
     try{
         const item = await productssch.findById(req.params.id)
+        const user = req.params.id
         const reviews = await reviewsch.find({ itemId: req.params.id })
 
         var totalReviews = []
@@ -112,16 +113,36 @@ router.get("/more/:id",fetchuser,async (req, res) => {
             const username = await usersch.findById(names)
             const review = reviews[index]["review"]
             const dict ={}
-            dict[username.name] = review
+            dict["username"] = username.name
+            dict["review"] = review
+            dict['itemId'] = user
+            dict['itemname'] = item.name
+            dict['itemcategory'] = item.category
+            dict['itemprice'] = item.price
             totalReviews.push(dict)
         }
         res.status(200).send(totalReviews)
     }
     catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server error occured")
+        res.status(500).send(error.message)
     }
 })
+
+
+router.post("/getoneproduct/:id",fetchuser, async (req, res) => {
+    try{
+        let userid = req.user.id
+        const user = await productssch.findById(req.params.id)
+        res.status(200).send(user)
+    }
+    catch(error){
+        console.error(error.message);
+        res.status(500).send("Internal Server error occured")
+    }
+
+})
+
 
 
 

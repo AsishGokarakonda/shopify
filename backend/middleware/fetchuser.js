@@ -3,7 +3,8 @@ secretKey = "nodemon@JWT"
 
 
 const fetchuser = (req,res,next) =>{
-    let token = req.header('auth-token')
+    var token = req.headers.authorization;
+    console.log(token)
     if(!token){
         res.status(401).send("Token is not sent")
     }

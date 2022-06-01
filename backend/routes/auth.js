@@ -42,7 +42,7 @@ router.post("/createuser",
                 name: req.body.name,
                 email: req.body.email,
                 password: hash,
-            }).then(user => res.json({ "token": token }))
+            }).then(user => res.json({ "Authorization": token }))
         }
         catch (error) {
             console.error(error.message);
@@ -180,6 +180,7 @@ router.get("/getallusers",async (req, res) => {
 router.post("/blockuser/:id",async (req, res) => {
     try {
         const userid = req.params.id
+        console.log(userid)
         const update = {
             blocked:"blocked"
         }

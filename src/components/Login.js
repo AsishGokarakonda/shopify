@@ -1,7 +1,9 @@
 import React from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Axios from 'axios'
 
-
-const Login = () => {
+const Login = (props) => {
   const host = "http://localhost:5000"
   const [creds, setCreds] = useState({ "email": "", "password": "" })
   const navigate = useNavigate();
@@ -19,8 +21,8 @@ const Login = () => {
       }).then(function (response) {
           props.promptAlert("Logged in successfully", "success")
           console.log(response.data.token);
-          localStorage.setItem("token", response.data.token)
-          navigate("/");
+          localStorage.setItem("Authorization", response.data.token)
+          navigate("/products");
       })
           .catch(function (error) {
               console.log(error)
@@ -30,19 +32,15 @@ const Login = () => {
   }
   return (
     <div className="container" style={{marginTop:"45px"}} >
-    <form>
+    <form onSubmit={handleOnSubmit}>
         <div className="mb-3">
-            <label for="exampleInputEmail1" className="form-label">Email address</label>
-            <input type="email" className="form-control" id="Email2" aria-describedby="emailHelp" />
+            <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+            <input type="email" className="form-control"  value={creds.email} name='email' onChange={handleOnChange} placeholder="Email" id="email" aria-describedby="emailHelp" />
             <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
         </div>
         <div className="mb-3">
-            <label for="exampleInputPassword1" className="form-label">Password</label>
-            <input type="password" className="form-control" id="Password2" />
-        </div>
-        <div className="mb-3 form-check">
-            <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-            <label className="form-check-label" for="exampleCheck1">Check me out</label>
+            <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+            <input type="password" value={creds.password} name='password' onChange={handleOnChange} autoComplete="on" className="form-control" id="password" />
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
     </form>
