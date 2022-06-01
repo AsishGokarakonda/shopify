@@ -111,8 +111,32 @@ const addProduct = async (product) =>{
   console.log(result) 
 }
 
+const updateProduct = async (id,product) =>{
+  console.log(product)
+  console.log(id)
+  // http://localhost:5000/api/products/updateproduct/6295dedc9ccaac4dba181376
+  const response = await fetch(`${host}/api/products/updateproduct/${id}`, {
+    method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body:JSON.stringify(product)
+  });
+  const result = await response.json()
+  console.log(result) 
+  for (let index = 0; index < products.length; index++) {
+    const element = products[index];
+    if (element.id === id) {
+      element.name = product.name
+      element.category = product.category
+      element.price = product.price
+    }
+  }
+}
+
+
   return (
-    <productsContext.Provider value={{ products, getProducts , MoreAboutProduct , reviews, addReview, getallusers,allusers,blockuser,unblockuser,addProduct}}>
+    <productsContext.Provider value={{ products, getProducts , MoreAboutProduct , reviews, addReview, getallusers,allusers,blockuser,unblockuser,addProduct,updateProduct}}>
       {props.children}
     </productsContext.Provider>
   )
