@@ -10,6 +10,9 @@ const ProductsState = (props) => {
   const [reviews, setReviews] = useState([])
   const [allusers, setAllusers] = useState([])
   const [oneuser, setOneuser] = useState({})
+  const [cartset, setCartset] = useState([])
+
+
   const getProducts = async () => {
     const response = await fetch(`${host}/api/products/getallproducts`, {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -178,8 +181,41 @@ const updateProduct = async (id,product) =>{
     console.log(result)
     setOneuser(result)
   }
+
+  const addToCart = async(id,Authorization) =>{
+    // http://localhost:5000/api/products/addtocart/6295f57fd61f06b8001af7a1
+    console.log(id)
+    console.log(Authorization)
+    const response = await fetch(`${host}/api/products/addtocart/${id}`, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Authorization
+      }
+    });
+    const result = await response.json()
+    console.log(result)
+    // setCart(result)
+    // console.log(cart)
+  }
+
+  const getcart = async (Authorization) =>{
+    console.log(Authorization)
+    // http://localhost:5000/api/products/getcart
+    const response = await fetch(`${host}/api/products/getcart`, {
+      method: 'GET', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Authorization
+      }
+    });
+    const result = await response.json()
+    console.log(result)
+    setCartset(result)
+    console.log(cartset)
+  }
   return (
-    <productsContext.Provider value={{ products, getProducts , MoreAboutProduct , reviews, addReview, getallusers,allusers,blockuser,unblockuser,addProduct,updateProduct,deleteAccount,editAccount,getuserbyAuthToken,oneuser}}>
+    <productsContext.Provider value={{ products, getProducts , MoreAboutProduct , reviews, addReview, getallusers,allusers,blockuser,unblockuser,addProduct,updateProduct,deleteAccount,editAccount,getuserbyAuthToken,oneuser,addToCart,cartset,getcart}}>
       {props.children}
     </productsContext.Provider>
   )

@@ -105,12 +105,15 @@ router.post("/more/:id",fetchuser,async (req, res) => {
     try{
         const item = await productssch.findById(req.params.id)
         const user = req.params.id
+        console.log(user)
         const reviews = await reviewsch.find({ itemId: req.params.id })
 
         var totalReviews = []
         for (let index = 0; index < reviews.length; index++) {
             const names = reviews[index]["userId"];
             const username = await usersch.findById(names)
+            console.log(names)
+            console.log(username)
             const review = reviews[index]["review"]
             const dict ={}
             dict["username"] = username.name

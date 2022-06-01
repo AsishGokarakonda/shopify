@@ -21,7 +21,7 @@ const EditAccount = (props) => {
             "name":oneuser.name,
             "email":oneuser.email
         })
-    })
+    },[getuserbyAuthToken, oneuser.name, oneuser.email])
     // console.log(intialcred)
     
 
@@ -50,6 +50,14 @@ const EditAccount = (props) => {
 
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
+            <div>
+            <div className="card" style={{ width: "20rem" }}>
+                <div className="card-body">
+                    <h5 className="card-title">{intialcred.name}</h5>
+                    <p className="card-subtitle mb-2 text-muted">{intialcred.email}</p>
+                </div>
+            </div>
+            </div>
         </div>
 
     )

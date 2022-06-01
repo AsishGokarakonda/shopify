@@ -18,6 +18,7 @@ import AdminViewListOfUsers from './components/AdminViewListOfUsers';
 import AdminAddProduct from './components/AdminAddProduct';
 import AdminUpdateProducts from './components/AdminUpdateProducts'
 import EditAccount from './components/EditAccount';
+import GetCart from './components/GetCart';
 
 function App() {
   const [alert, setAlert] = useState(null)
@@ -40,13 +41,14 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup promptAlert={promptAlert} />} />
             <Route path="/login" element={<Login promptAlert={promptAlert} />} />
-            <Route path="/products" element={<Products />} />
+            <Route path="/products" element={<Products promptAlert={promptAlert}/>} />
             <Route path="/productReviews" element={<ProductReviews />} />
             <Route path="/Adminhome" element={<AdminHome />} />
             <Route path="/listofusers" element={<AdminViewListOfUsers />} />
             <Route path="/addproduct" element={<AdminAddProduct promptAlert={promptAlert} />} />
             <Route path="/updateproduct" element={<AdminUpdateProducts promptAlert={promptAlert} />} />
             <Route path="/editaccount" element={<EditAccount promptAlert={promptAlert} />} />
+            <Route path="/getcart" element={<GetCart promptAlert={promptAlert} />} />
             
 
           </Routes>

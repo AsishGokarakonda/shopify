@@ -5,10 +5,10 @@ import productsContext from '../context/productsContext'
 import ProductItem from './ProductItem'
 
 
-const Products = () => {
+const Products = (props) => {
   const navigate = useNavigate()
   const context = useContext(productsContext)
-  const { products, getProducts ,addReview} = context
+  const { products, getProducts ,addReview, addToCart} = context
   // const [products, setProducts] = useState()
   const [id, setId] = useState("")
   const [review, setReview] = useState({"review":""})
@@ -39,6 +39,18 @@ const Products = () => {
     console.log(review)
     addReview(review,id,localStorage.getItem("Authorization"))
     document.getElementById('modalclose').click()
+    }
+
+    const cardAdd = (item) =>{
+      addToCart(item._id,localStorage.getItem("Authorization")).then(function (response) {
+        props.promptAlert("addedTocart","success")
+    })
+        .catch(function (error) {
+            console.log(error)
+            props.promptAlert("This product is already in cart","danger")
+
+        });
+      
     }
   return (
     <>
@@ -77,7 +89,7 @@ const Products = () => {
         <div className="row my-3" >
           <h1>Products</h1>
           {products.map((item) => {
-            return <ProductItem item={item} reviewaddition={reviewaddition} key={item._id}  />
+            return <ProductItem item={item} reviewaddition={reviewaddition} key={item._id} cardAdd={cardAdd} />
           })}
         </div>
       </div>

@@ -9,6 +9,10 @@ const ProductReviews = () => {
     const context = useContext(productsContext)
     const { reviews } = context
     console.log(reviews)
+    useEffect(() => {
+      
+    }, )
+    
 
         if (!localStorage.getItem("Authorization")) {
             //   console.log(localStorage.getItem("Authorization"))

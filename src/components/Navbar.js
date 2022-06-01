@@ -7,7 +7,7 @@ const Navbar = (props) => {
     const loc = useLocation()
     const navigate = useNavigate()
     const context = useContext(productsContext)
-    const { deleteAccount } = context
+    const { deleteAccount , getcart} = context
 
     const handleLogOut = () => {
         localStorage.removeItem("Authorization")
@@ -26,6 +26,10 @@ const Navbar = (props) => {
     }
     const handleEditAcc =() =>{
         navigate("/editaccount")
+    }
+    const handleCart = () =>{
+        getcart(localStorage.getItem("Authorization"))
+        navigate("/getcart")
     }
     return (
 
@@ -69,6 +73,10 @@ const Navbar = (props) => {
                         
                         <button onClick={handleDelete} className='btn btn-danger mx-2'>
                             Delete Account
+                        </button>
+
+                        <button onClick={handleCart} className='btn btn-success mx-2'>
+                            Cart
                         </button>
 
                     </div>
