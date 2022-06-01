@@ -32,6 +32,7 @@ const EditAccount = (props) => {
     const handleOnSubmit = (e) =>{
         e.preventDefault()
         console.log(creds)
+        editAccount(creds,localStorage.getItem("Authorization"))
     }
     return (
         <div className='container'>
@@ -48,9 +49,10 @@ const EditAccount = (props) => {
                         <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
                 </div>
 
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit"  className="btn btn-primary">Submit</button>
             </form>
-            <div>
+            <div style={{marginTop:"30px"}}>
+                <h1>Present Account Credentials</h1>
             <div className="card" style={{ width: "20rem" }}>
                 <div className="card-body">
                     <h5 className="card-title">{intialcred.name}</h5>

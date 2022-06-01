@@ -1,7 +1,7 @@
 import React from "react";
 import productsContext from "./productsContext";
 import { useState } from "react";
-import Axios from 'axios'
+// import Axios from 'axios'
 
 const ProductsState = (props) => {
   const host = "http://localhost:5000"
@@ -153,19 +153,20 @@ const updateProduct = async (id,product) =>{
   }
 
 
-  const editAccount = async (Authorization) =>{
+  const editAccount = async (creds,Authorization) =>{
     // http://localhost:5000/api/auth/edituser
+    console.log(creds)
     const response = await fetch(`${host}/api/auth/edituser`, {
       method: 'PUT', // *GET, POST, PUT, DELETE, etc.
       headers: {
         'Content-Type': 'application/json',
         'Authorization': Authorization
-      }
+      },
+      body:JSON.stringify(creds)
     });
     const result = await response.json()
     console.log(result) 
     console.log(response)
-
   }
 
   const getuserbyAuthToken = async(Authorization) =>{
@@ -178,7 +179,7 @@ const updateProduct = async (id,product) =>{
       }
     });
     const result = await response.json()
-    console.log(result)
+    // console.log(result)
     setOneuser(result)
   }
 
