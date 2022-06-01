@@ -1,7 +1,9 @@
 const express = require("express");
 const usersch = require("../models/User")
 const router = express.Router();
+const cartsch = require("../models/Cart.js")
 const { body, validationResult } = require('express-validator');
+const reviewsch = require("../models/Reviews.js")
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 let fetchuser = require("../middleware/fetchuser")
@@ -109,13 +111,15 @@ router.post("/getuser", fetchuser, async (req, res) => {
 //  deleting a user with its id 
 router.delete("/deleteuser/", fetchuser, async (req, res) => {
     try {
-        console.log("Hi")
-        console.log(req.user.id)
         const user = await usersch.findById(req.user.id)
         if (!user) {
             return res.status(404).send("User doesnot exists")
         }
         // return res.status(200).send(user._id);
+        let reviewDelete2 = await reviewsch.deleteMany({"userId":req.user.id})
+        let cartDelete2 = await cartsch.deleteMany({"userId":req.user.id})
+        console.log(reviewDelete2)
+        console.log(cartDelete2)
         let userDelete = await usersch.findByIdAndDelete(req.user.id)
         return res.status(200).send("Success! User has been deleted")
     }
